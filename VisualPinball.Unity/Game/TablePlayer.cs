@@ -9,9 +9,8 @@ namespace VisualPinball.Unity.Game
 {
 	public class TablePlayer : MonoBehaviour
 	{
-
-		private Table _table;
-		private Player _player;
+		public Table Table { get; private set; }
+		public Player Player { get; private set; }
 
 		private Transform _leftFlipper;
 		private Transform _rightFlipper;
@@ -19,8 +18,8 @@ namespace VisualPinball.Unity.Game
 		private void Start()
 		{
 			var tableComponent = gameObject.GetComponent<VisualPinballTable>();
-			_table = tableComponent.CreateTable();
-			_player = new Player(_table).Init();
+			Table = tableComponent.CreateTable();
+			Player = new Player(Table).Init();
 
 			_leftFlipper  = transform.Find("Flippers/LeftFlipper");
 			_rightFlipper  = transform.Find("Flippers/RightFlipper");
@@ -30,34 +29,34 @@ namespace VisualPinball.Unity.Game
 		{
 			// all of this is hacky and only serves as proof of concept.
 			// flippers will obviously be handled via script later.
-			if (_table.Flippers.ContainsKey("LeftFlipper")) {
+			if (Table.Flippers.ContainsKey("LeftFlipper")) {
 				if (Input.GetKeyDown("left shift")) {
-					_table.Flippers["LeftFlipper"].RotateToEnd();
+					Table.Flippers["LeftFlipper"].RotateToEnd();
 				}
 				if (Input.GetKeyUp("left shift")) {
-					_table.Flippers["LeftFlipper"].RotateToStart();
+					Table.Flippers["LeftFlipper"].RotateToStart();
 				}
 			}
 
-			if (_table.Flippers.ContainsKey("RightFlipper")) {
+			if (Table.Flippers.ContainsKey("RightFlipper")) {
 				if (Input.GetKeyDown("right shift")) {
-					_table.Flippers["RightFlipper"].RotateToEnd();
+					Table.Flippers["RightFlipper"].RotateToEnd();
 				}
 				if (Input.GetKeyUp("right shift")) {
-					_table.Flippers["RightFlipper"].RotateToStart();
+					Table.Flippers["RightFlipper"].RotateToStart();
 				}
 			}
 
-			_player.UpdatePhysics();
+			Player.UpdatePhysics();
 
-			if (_table.Flippers.ContainsKey("LeftFlipper")) {
+			if (Table.Flippers.ContainsKey("LeftFlipper")) {
 				var rotL = _leftFlipper.transform.localRotation.eulerAngles;
-				rotL.z = MathF.RadToDeg(_table.Flippers["LeftFlipper"].State.Angle);
+				rotL.z = MathF.RadToDeg(Table.Flippers["LeftFlipper"].State.Angle);
 				_leftFlipper.transform.localRotation = Quaternion.Euler(rotL);
 			}
-			if (_table.Flippers.ContainsKey("RightFlipper")) {
+			if (Table.Flippers.ContainsKey("RightFlipper")) {
 				var rotR = _rightFlipper.transform.localRotation.eulerAngles;
-				rotR.z = MathF.RadToDeg(_table.Flippers["RightFlipper"].State.Angle);
+				rotR.z = MathF.RadToDeg(Table.Flippers["RightFlipper"].State.Angle);
 				_rightFlipper.transform.localRotation = Quaternion.Euler(rotR);
 			}
 		}
