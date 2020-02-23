@@ -132,6 +132,11 @@
     <Compile Include="Math\Vertex2D.cs" />
     <Compile Include="Math\Vertex3D.cs" />
     <Compile Include="Math\Vertex3DNoTex2.cs" />
+    <Compile Include="Physics\AnimObject.cs" />
+    <Compile Include="Physics\HitLine3D.cs" />
+    <Compile Include="Physics\HitLineZ.cs" />
+    <Compile Include="Physics\HitPoint.cs" />
+    <Compile Include="Physics\SlingshotAnimObject.cs" />
     <Compile Include="Physics\CollisionEvent.cs" />
     <Compile Include="Physics\CollisionType.cs" />
     <Compile Include="Physics\Hit3DPoly.cs" />
@@ -143,6 +148,7 @@
     <Compile Include="Physics\HitQuadTree.cs" />
     <Compile Include="Physics\LineSeg.cs" />
     <Compile Include="Physics\IMoverObject.cs" />
+    <Compile Include="Physics\LineSegSlingshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VPT\Ball\Ball.cs" />
     <Compile Include="VPT\Ball\BallData.cs" />
@@ -211,6 +217,7 @@
     <Compile Include="VPT\Spinner\SpinnerMeshGenerator.cs" />
     <Compile Include="VPT\Surface\Surface.cs" />
     <Compile Include="VPT\Surface\SurfaceData.cs" />
+    <Compile Include="VPT\Surface\SurfaceHitGenerator.cs" />
     <Compile Include="VPT\Surface\SurfaceMeshGenerator.cs" />
     <Compile Include="VPT\Table\CustomInfoTags.cs" />
     <Compile Include="VPT\Table\HashWriter.cs" />
