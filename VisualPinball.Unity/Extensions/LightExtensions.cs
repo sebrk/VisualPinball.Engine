@@ -2,7 +2,7 @@
 
 namespace VisualPinball.Unity.Extensions
 {
-	public static class LightExtension
+	public static class LightExtensions
 	{
 		public static GameObject ToUnityPointLight(this Engine.VPT.Light.Light vpxLight)
 		{

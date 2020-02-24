@@ -6,7 +6,7 @@ using VisualPinball.Unity.Importer;
 
 namespace VisualPinball.Unity.Extensions
 {
-	public static class Texture
+	public static class TextureExtensions
 	{
 		public static Texture2D ToUnityTexture(this Engine.VPT.Texture vpTex)
 		{

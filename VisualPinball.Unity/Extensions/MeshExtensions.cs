@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 using VisualPinball.Engine.Game;
 namespace VisualPinball.Unity.Extensions
 {
-	public static class Mesh
+	public static class MeshExtensions
 	{
 		public static UnityEngine.Mesh ToUnityMesh(this Engine.VPT.Mesh vpMesh, string name = null)
 		{

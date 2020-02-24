@@ -13,7 +13,7 @@ using Logger = NLog.Logger;
 
 namespace VisualPinball.Unity.Extensions
 {
-	public static class Material
+	public static class MaterialExtensions
 	{
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

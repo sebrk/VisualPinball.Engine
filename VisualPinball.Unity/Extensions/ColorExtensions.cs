@@ -1,6 +1,6 @@
 ﻿namespace VisualPinball.Unity.Extensions
 {
-	public static class Color
+	public static class ColorExtensions
 	{
 		public static UnityEngine.Color ToUnityColor(this Engine.Math.Color color)
 		{

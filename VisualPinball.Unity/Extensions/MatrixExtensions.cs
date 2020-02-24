@@ -2,7 +2,7 @@
 
 namespace VisualPinball.Unity.Extensions
 {
-	public static class Matrix3D
+	public static class MatrixExtensions
 	{
 		public static Matrix4x4 ToUnityMatrix(this Engine.Math.Matrix3D vpMatrix)
 		{

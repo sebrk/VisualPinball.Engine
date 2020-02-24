@@ -3,7 +3,7 @@ using VisualPinball.Engine.Math;
 
 namespace VisualPinball.Unity.Extensions
 {
-	public static class Math
+	public static class MathExtensions
 	{
 		public static Vector3 ToUnityVector3(this Vertex3D vertex)
 		{
