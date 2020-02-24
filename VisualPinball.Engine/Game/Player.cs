@@ -9,6 +9,7 @@ namespace VisualPinball.Engine.Game
 	public class Player
 	{
 		public IEnumerable<Ball> Balls => _physics.Balls.ToArray();
+		public Vertex3D Gravity => _physics.Gravity;
 		public event EventHandler<BallCreationArgs> BallCreated;
 		public event EventHandler<BallDestructionArgs> BallDestroyed;
 

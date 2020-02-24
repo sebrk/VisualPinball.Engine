@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using VisualPinball.Engine.Game;
 using VisualPinball.Engine.Math;
 using VisualPinball.Engine.VPT.Table;
 using VisualPinball.Unity.Components;
-using Math = VisualPinball.Unity.Extensions.Math;
+using VisualPinball.Unity.Extensions;
 
 namespace VisualPinball.Unity.Game
 {
@@ -29,6 +28,12 @@ namespace VisualPinball.Unity.Game
 			Player = new Player(Table).Init();
 
 			Player.BallCreated += OnBallCreated;
+
+			// adapt playfield angle to match gravity
+			var angle = Vector3.Angle(Player.Gravity.ToUnityVector3(), Vector3.back);
+			var rot = transform.localEulerAngles;
+			rot.x -= angle;
+			transform.localEulerAngles = rot;
 
 			// create ball parent
 			_ballGroup = new GameObject("Balls");
@@ -78,7 +83,7 @@ namespace VisualPinball.Unity.Game
 						new Vector4(ball.State.Orientation.Matrix[0][2], ball.State.Orientation.Matrix[1][2], ball.State.Orientation.Matrix[2][2], 0.0f),
 						new Vector4(0, 0, 0, 1)
 					);
-					b.transform.localPosition = Math.ToUnityVector3(ball.State.Pos);
+					b.transform.localPosition = ball.State.Pos.ToUnityVector3();
 					b.transform.localRotation = Quaternion.LookRotation(
 						new Vector3(m.m02, m.m12, m.m22),
 						new Vector3(m.m01, m.m11, m.m21)
