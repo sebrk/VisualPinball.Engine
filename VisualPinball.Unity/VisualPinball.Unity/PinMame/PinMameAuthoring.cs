@@ -2,11 +2,11 @@
 using UnityEngine;
 using VisualPinball.Engine.PinMame;
 
-namespace VisualPinball.Unity.PinMame
+namespace VisualPinball.Unity
 {
 	[AddComponentMenu("Visual Pinball/PinMAME")]
 	[ExecuteInEditMode]
-	public class PinMameBehavior : MonoBehaviour
+	public class PinMameAuthoring : MonoBehaviour
 	{
 		public string GameName = "mm_109c";
 		public Engine.PinMame.PinMame PinMame { get; private set; }

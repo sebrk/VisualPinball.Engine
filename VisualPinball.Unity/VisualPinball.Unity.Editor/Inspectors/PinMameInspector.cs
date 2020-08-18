@@ -1,19 +1,18 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using VisualPinball.Unity.PinMame;
 
 namespace VisualPinball.Unity.Editor.Inspectors
 {
-	[CustomEditor(typeof(PinMameBehavior))]
+	[CustomEditor(typeof(PinMameAuthoring))]
 	[CanEditMultipleObjects]
 	public class PinMameInspector : UnityEditor.Editor
 	{
-		private PinMameBehavior _pinMameBehavior;
+		private PinMameAuthoring _pinMameAuthoring;
 
 		private void OnEnable()
 		{
-			_pinMameBehavior = (PinMameBehavior) target;
-			_pinMameBehavior.Init();
+			_pinMameAuthoring = (PinMameAuthoring) target;
+			_pinMameAuthoring.Init();
 		}
 
 		public override void OnInspectorGUI()
@@ -22,11 +21,11 @@ namespace VisualPinball.Unity.Editor.Inspectors
 
 			EditorGUILayout.BeginHorizontal();
 			if (GUILayout.Button("Start Game")) {
-				_pinMameBehavior.StartGame();
+				_pinMameAuthoring.StartGame();
 			}
 
 			if (GUILayout.Button("Stop Game")) {
-				_pinMameBehavior.PinMame.StopGame();
+				_pinMameAuthoring.PinMame.StopGame();
 			}
 			EditorGUILayout.EndHorizontal();
 		}

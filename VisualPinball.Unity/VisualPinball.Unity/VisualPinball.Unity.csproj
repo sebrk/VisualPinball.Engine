@@ -18,6 +18,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="**/*.meta" Visible="false" />
+    <None Remove="PinMame\DmdShader.shader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\VisualPinball.Engine\VisualPinball.Engine.csproj" />
