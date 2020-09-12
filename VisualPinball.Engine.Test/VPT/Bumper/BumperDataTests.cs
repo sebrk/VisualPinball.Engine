@@ -14,10 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+using System.Linq;
 using FluentAssertions;
+using MessagePack;
 using NUnit.Framework;
 using VisualPinball.Engine.Test.Test;
 using VisualPinball.Engine.VPT.Bumper;
+using VisualPinball.Engine.VPT.Table;
 
 namespace VisualPinball.Engine.Test.VPT.Bumper
 {
@@ -29,6 +32,20 @@ namespace VisualPinball.Engine.Test.VPT.Bumper
 			var table = Engine.VPT.Table.Table.Load(VpxPath.Bumper);
 			var data = table.Bumper("Bumper1").Data;
 			ValidateTableData(data);
+		}
+
+		[Test]
+		public void ShouldReadBumperDataMessagePack()
+		{
+			var table = Engine.VPT.Table.Table.Load(VpxPath.Bumper);
+			var tb = table.GenerateBundle();
+
+			var bytes = MessagePackSerializer.Serialize(tb);
+
+			var tb2 = MessagePackSerializer.Deserialize<TableBundle>(bytes);
+			var bumperData = tb2.Bumpers.First(b => b.Name == "Bumper1");
+
+			ValidateTableData(bumperData);
 		}
 
 		[Test]

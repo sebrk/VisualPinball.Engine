@@ -17,6 +17,7 @@
 // ReSharper disable UnassignedField.Global
 
 using System;
+using MessagePack;
 using VisualPinball.Engine.IO;
 
 namespace VisualPinball.Engine.VPT
@@ -30,15 +31,19 @@ namespace VisualPinball.Engine.VPT
 	[Serializable]
 	public abstract class ItemData : BiffData
 	{
+		[Key(1000)]
 		[BiffBool("LOCK", Pos = 1000)]
 		public bool IsLocked;
 
+		[Key(1001)]
 		[BiffInt("LAYR", Pos = 1001)]
 		public int EditorLayer;
 
+		[Key(1002)]
 		[BiffString("LANR", Pos = 1002)]
 		public string EditorLayerName  = string.Empty;
 
+		[Key(1003)]
 		[BiffBool("LVIS", Pos = 1003)]
 		public bool EditorLayerVisibility = true;
 

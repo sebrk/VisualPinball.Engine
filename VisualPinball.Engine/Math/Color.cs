@@ -15,23 +15,25 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 using System;
+using MessagePack;
 
 namespace VisualPinball.Engine.Math
 {
 	[Serializable]
+	[MessagePackObject]
 	public class Color
 	{
-		public int Red;
-		public int Green;
-		public int Blue;
-		public int Alpha = 0xff;
+		[Key(0)] public int Red;
+		[Key(1)] public int Green;
+		[Key(2)] public int Blue;
+		[Key(3)] public int Alpha = 0xff;
 
-		public float R => Red / 255f;
-		public float G => Green / 255f;
-		public float B => Blue / 255f;
-		public float A => Alpha / 255f;
+		[IgnoreMember] public float R => Red / 255f;
+		[IgnoreMember] public float G => Green / 255f;
+		[IgnoreMember] public float B => Blue / 255f;
+		[IgnoreMember] public float A => Alpha / 255f;
 
-		public int Bgr => Blue * 65536 + Green * 256 + Red;
+		[IgnoreMember] public int Bgr => Blue * 65536 + Green * 256 + Red;
 
 		public Color(int red, int green, int blue, int alpha)
 		{

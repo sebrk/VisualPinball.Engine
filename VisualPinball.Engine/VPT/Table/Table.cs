@@ -287,6 +287,15 @@ namespace VisualPinball.Engine.VPT.Table
 		{
 		}
 
+		public TableBundle GenerateBundle()
+		{
+			var tb = new TableBundle {
+				Table = Data,
+				Bumpers = _bumpers.Values.Select(b => b.Data).ToArray()
+			};
+			return tb;
+		}
+
 		/// <summary>
 		/// Adds a game item to the table.
 		/// </summary>

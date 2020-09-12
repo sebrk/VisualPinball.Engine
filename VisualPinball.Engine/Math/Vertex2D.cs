@@ -16,13 +16,17 @@
 
 using System;
 using System.IO;
+using MessagePack;
 
 namespace VisualPinball.Engine.Math
 {
 	[Serializable]
+	[MessagePackObject]
 	public class Vertex2D
 	{
+		[Key(0)]
 		public float X;
+		[Key(1)]
 		public float Y;
 
 		public float GetX() => X;

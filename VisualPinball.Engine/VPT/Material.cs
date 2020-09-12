@@ -20,6 +20,7 @@
 
 using System;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.IO;
 using VisualPinball.Engine.Math;
 
@@ -29,13 +30,16 @@ namespace VisualPinball.Engine.VPT
 	/// A material, as seen in Visual Pinball's Material Manager.
 	/// </summary>
 	[Serializable]
+	[MessagePackObject]
 	public class Material
 	{
+		[Key(0)]
 		public string Name;
 
 		/// <summary>
 		/// Wrap/rim lighting factor (0(off)..1(full))
 		/// </summary>
+		[Key(1)]
 		public float WrapLighting;
 
 		/// <summary>
@@ -55,56 +59,73 @@ namespace VisualPinball.Engine.VPT
 		/// When sending to the render device, the roughness is defined like that:
 		/// > fRoughness = exp2f(10.0f * mat->m_fRoughness + 1.0f); // map from 0..1 to 2..2048
 		/// </description>
+		[Key(2)]
 		public float Roughness;
 
 		/// <summary>
 		/// Use image also for the glossy layer (0(no tinting at all)..1(use image)),
 		/// stupid quantization because of legacy loading/saving
 		/// </summary>
+		[Key(3)]
 		public float GlossyImageLerp;
 
 		/// <summary>
 		/// Thickness for transparent materials (0(paper thin)..1(maximum)),
 		/// stupid quantization because of legacy loading/saving
 		/// </summary>
+		[Key(4)]
 		public float Thickness;
 
 		/// <summary>
 		/// Edge weight/brightness for glossy and clearcoat (0(dark edges)..1(full fresnel))
 		/// </summary>
+		[Key(5)]
 		public float Edge;
+		[Key(6)]
 		public float EdgeAlpha;
+		[Key(7)]
 		public float Opacity;
 
 		/// <summary>
 		/// Can be overridden by texture on object itself
 		/// </summary>
+		[Key(8)]
 		public Color BaseColor;
 
 		/// <summary>
 		/// Specular of glossy layer
 		/// </summary>
+		[Key(9)]
 		public Color Glossiness;
 
 		/// <summary>
 		/// Specular of clearcoat layer
 		/// </summary>
+		[Key(10)]
 		public Color ClearCoat;
 
 		/// <summary>
 		/// Is a metal material or not
 		/// </summary>
+		[Key(11)]
 		public bool IsMetal;
 
+		[Key(12)]
 		public bool IsOpacityActive;
 
 		// physics
+		[Key(13)]
 		public float Elasticity;
+		[Key(14)]
 		public float ElasticityFalloff;
+		[Key(15)]
 		public float Friction;
+		[Key(16)]
 		public float ScatterAngle;
 
+		[IgnoreMember]
 		internal readonly MaterialData MaterialData;
+		[IgnoreMember]
 		internal PhysicsMaterialData PhysicsMaterialData;
 
 		public Material()

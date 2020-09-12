@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using MessagePack;
 using NLog;
 using OpenMcdf;
 using VisualPinball.Engine.VPT;
@@ -44,11 +45,19 @@ namespace VisualPinball.Engine.IO
 	{
 		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+		[IgnoreMember]
 		public string StorageName => _storageName ?? $"{StoragePrefix}{StorageIndex}";
 
+		[IgnoreMember]
 		public readonly StoragePrefix StoragePrefix;
+
+		[IgnoreMember]
 		public int StorageIndex;
+
+		[IgnoreMember]
 		public readonly List<UnknownBiffRecord> UnknownRecords = new List<UnknownBiffRecord>();
+
+		[IgnoreMember]
 		private readonly string _storageName;
 
 		protected BiffData(StoragePrefix prefix)

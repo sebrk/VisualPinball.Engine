@@ -16,16 +16,19 @@
 
 using System;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.Common;
 
 namespace VisualPinball.Engine.Math
 {
 	[Serializable]
+	[MessagePackObject]
 	public class Vertex3D : Vertex2D
 	{
 		public static readonly Vertex3D One = new Vertex3D(1.0f, 1.0f, 1.0f);
 		public static readonly Vertex3D Zero = new Vertex3D(0, 0, 0);
 
+		[Key(2)]
 		public float Z;
 
 		public Vertex3D()
