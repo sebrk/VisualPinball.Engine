@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.Common;
 using VisualPinball.Engine.IO;
 using VisualPinball.Engine.Math;
@@ -35,123 +36,157 @@ namespace VisualPinball.Engine.VPT.Flipper
 	[BiffIgnore("RWDT")]
 	[BiffIgnore("RHGT")]
 	[BiffIgnore("RTHK")]
+	[MessagePackObject]
 	public class FlipperData : ItemData
 	{
 		public override string GetName() => Name;
 		public override void SetName(string name) { Name = name; }
 
+		[Key(14)]
 		[BiffString("NAME", IsWideString = true, Pos = 14)]
 		public string Name;
 
+		[Key(2)]
 		[BiffFloat("BASR", Pos = 2)]
 		public float BaseRadius = 21.5f;
 
+		[Key(3)]
 		[BiffFloat("ENDR", Pos = 3)]
 		public float EndRadius = 13.0f;
 
+		[Key(29)]
 		[BiffFloat("FRMN", Pos = 29)]
 		public float FlipperRadiusMin;
 
+		[Key(4)]
 		[BiffFloat("FLPR", Pos = 4)]
 		public float FlipperRadiusMax = 130.0f;
 
+		[Key(50)]
 		[BiffFloat("FLPR", SkipWrite = true)]
 		public float FlipperRadius = 130.0f;
 
+		[Key(6)]
 		[BiffFloat("ANGS", Pos = 6)]
 		public float StartAngle = 121.0f;
 
+		[Key(7)]
 		[BiffFloat("ANGE", Pos = 7)]
 		public float EndAngle = 70.0f;
 
+		[Key(30)]
 		[BiffFloat("FHGT", Pos = 30)]
 		public float Height = 50.0f;
 
+		[Key(1)]
 		[BiffVertex("VCEN", Pos = 1)]
 		public Vertex2D Center;
 
+		[Key(31)]
 		[TextureReference]
 		[BiffString("IMAG", Pos = 31)]
 		public string Image = string.Empty;
 
+		[Key(12)]
 		[BiffString("SURF", Pos = 12)]
 		public string Surface = string.Empty;
 
+		[Key(13)]
 		[MaterialReference]
 		[BiffString("MATR", Pos = 13)]
 		public string Material = string.Empty;
 
+		[Key(15)]
 		[MaterialReference]
 		[BiffString("RUMA", Pos = 15)]
 		public string RubberMaterial = string.Empty;
 
+		[Key(161)]
 		[BiffFloat("RTHF", Pos = 16.1)]
 		public float RubberThickness = 7.0f;
 
+		[Key(171)]
 		[BiffFloat("RHGF", Pos = 17.1)]
 		public float RubberHeight = 19.0f;
 
+		[Key(181)]
 		[BiffFloat("RWDF", Pos = 18.1)]
 		public float RubberWidth = 24.0f;
 
+		[Key(9)]
 		[BiffFloat("FORC", Pos = 9)]
 		public float Mass = 1f;
 
+		[Key(19)]
 		[BiffFloat("STRG", Pos = 19)]
 		public float Strength = 2200f;
 
+		[Key(20)]
 		[BiffFloat("ELAS", Pos = 20)]
 		public float Elasticity = 0.8f;
 
+		[Key(21)]
 		[BiffFloat("ELFO", Pos = 21)]
 		public float ElasticityFalloff = 0.43f;
 
+		[Key(22)]
 		[BiffFloat("FRIC", Pos = 22)]
 		public float Friction = 0.6f;
 
+		[Key(5)]
 		[BiffFloat("FRTN", Pos = 5)]
 		public float Return = 0.058f;
 
+		[Key(23)]
 		[BiffFloat("RPUP", Pos = 23)]
 		public float RampUp = 3f;
 
+		[Key(25)]
 		[BiffFloat("TODA", Pos = 25)]
 		public float TorqueDamping = 0.75f;
 
+		[Key(26)]
 		[BiffFloat("TDAA", Pos = 26)]
 		public float TorqueDampingAngle = 6f;
 
+		[Key(24)]
 		[BiffFloat("SCTR", Pos = 24)]
 		public float Scatter;
 
+		[Key(8)]
 		[BiffInt("OVRP", Pos = 8)]
 		public int OverridePhysics;
 
+		[Key(27)]
 		[BiffBool("VSBL", Pos = 27)]
 		public bool IsVisible = true;
 
+		[Key(28)]
 		[BiffBool("ENBL", Pos = 28)]
 		public bool IsEnabled = true;
 
+		[Key(32)]
 		[BiffBool("REEN", Pos = 32)]
 		public bool IsReflectionEnabled = true;
 
+		[Key(10)]
 		[BiffBool("TMON", Pos = 10)]
 		public bool IsTimerEnabled;
 
+		[Key(11)]
 		[BiffInt("TMIN", Pos = 11)]
 		public int TimerInterval;
 
-		public float OverrideMass;
-		public float OverrideStrength;
-		public float OverrideElasticity;
-		public float OverrideElasticityFalloff;
-		public float OverrideFriction;
-		public float OverrideReturnStrength;
-		public float OverrideCoilRampUp;
-		public float OverrideTorqueDamping;
-		public float OverrideTorqueDampingAngle;
-		public float OverrideScatterAngle;
+		[IgnoreMember] public float OverrideMass;
+		[IgnoreMember] public float OverrideStrength;
+		[IgnoreMember] public float OverrideElasticity;
+		[IgnoreMember] public float OverrideElasticityFalloff;
+		[IgnoreMember] public float OverrideFriction;
+		[IgnoreMember] public float OverrideReturnStrength;
+		[IgnoreMember] public float OverrideCoilRampUp;
+		[IgnoreMember] public float OverrideTorqueDamping;
+		[IgnoreMember] public float OverrideTorqueDampingAngle;
+		[IgnoreMember] public float OverrideScatterAngle;
 
 		public float GetReturnRatio(TableData tableData) => DoOverridePhysics(tableData) ? OverrideReturnStrength : Return;
 		public float GetStrength(TableData tableData) => DoOverridePhysics(tableData) ? OverrideStrength : Strength;
@@ -231,6 +266,11 @@ namespace VisualPinball.Engine.VPT.Flipper
 		static FlipperData()
 		{
 			Init(typeof(FlipperData), Attributes);
+		}
+
+		[SerializationConstructor]
+		public FlipperData() : base(StoragePrefix.GameItem)
+		{
 		}
 
 		public FlipperData(string storageName) : base(storageName)

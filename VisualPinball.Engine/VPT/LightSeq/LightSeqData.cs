@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.IO;
 using VisualPinball.Engine.Math;
 using VisualPinball.Engine.VPT.Table;
@@ -30,33 +31,48 @@ using VisualPinball.Engine.VPT.Table;
 namespace VisualPinball.Engine.VPT.LightSeq
 {
 	[Serializable]
+	[MessagePackObject]
 	public class LightSeqData : ItemData
 	{
 		public override string GetName() => Name;
 		public override void SetName(string name) { Name = name; }
 
+		[Key(8)]
 		[BiffString("NAME", IsWideString = true, Pos = 8)]
 		public string Name;
 
+		[Key(2)]
 		[BiffString("COLC", IsWideString = true, Pos = 2)]
 		public string Collection;
 
+		[Key(1)]
 		[BiffVertex("VCEN", Index = 0, Pos = 1)]
 		public Vertex2D V = new Vertex2D();
 
-		[BiffFloat("CTRX", Pos = 3)] public float PosX { set => Center.X = value; get => Center.X; }
-		[BiffFloat("CTRY", Pos = 4)] public float PosY { set => Center.Y = value; get => Center.Y; }
+		[IgnoreMember]
+		[BiffFloat("CTRX", Pos = 3)]
+		public float PosX { set => Center.X = value; get => Center.X; }
+
+		[IgnoreMember]
+		[BiffFloat("CTRY", Pos = 4)]
+		public float PosY { set => Center.Y = value; get => Center.Y; }
+
+		[Key(3)]
 		public Vertex2D Center = new Vertex2D();
 
+		[Key(5)]
 		[BiffInt("UPTM", Pos = 5)]
 		public int UpdateInterval = 25;
 
+		[Key(9)]
 		[BiffBool("BGLS", Pos = 9)]
 		public bool Backglass = false;
 
+		[Key(6)]
 		[BiffBool("TMON", Pos = 6)]
 		public bool IsTimerEnabled;
 
+		[Key(7)]
 		[BiffInt("TMIN", Pos = 7)]
 		public int TimerInterval;
 
@@ -78,6 +94,11 @@ namespace VisualPinball.Engine.VPT.LightSeq
 		static LightSeqData()
 		{
 			Init(typeof(LightSeqData), Attributes);
+		}
+
+		[SerializationConstructor]
+		public LightSeqData() : base(StoragePrefix.GameItem)
+		{
 		}
 
 		public LightSeqData(BinaryReader reader, string storageName) : base(storageName)

@@ -25,38 +25,49 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.IO;
 using VisualPinball.Engine.VPT.Table;
 
 namespace VisualPinball.Engine.Math
 {
 	[Serializable]
+	[MessagePackObject]
 	public class DragPointData : BiffData
 	{
+		[Key(1)]
 		[BiffVertex("VCEN", Pos = 1, WriteAsVertex2D = true)]
 		public Vertex3D Center;
 
+		[Key(2)]
 		[BiffFloat("POSZ", Pos = 2)]
 		public float PosZ { set => Center.Z = value; get => Center.Z; }
 
+		[Key(3)]
 		[BiffBool("SMTH", Pos = 3)]
 		public bool IsSmooth;
 
+		[Key(4)]
 		[BiffBool("SLNG", Pos = 4)]
 		public bool IsSlingshot;
 
+		[Key(5)]
 		[BiffBool("ATEX", Pos = 5)]
 		public bool HasAutoTexture;
 
+		[Key(6)]
 		[BiffFloat("TEXC", Pos = 6)]
 		public float TextureCoord;
 
+		[Key(7)]
 		[BiffBool("LOCK", Pos = 7)]
 		public bool IsLocked;
 
+		[Key(8)]
 		[BiffInt("LAYR", Pos = 8)]
 		public int EditorLayer;
 
+		[IgnoreMember]
 		public float CalcHeight;
 
 		public override string ToString()
@@ -69,6 +80,11 @@ namespace VisualPinball.Engine.Math
 		static DragPointData()
 		{
 			Init(typeof(DragPointData), Attributes);
+		}
+
+		[SerializationConstructor]
+		public DragPointData() : base(null)
+		{
 		}
 
 		public DragPointData(float x, float y) : base(null)

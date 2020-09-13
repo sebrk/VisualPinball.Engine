@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.IO;
 using VisualPinball.Engine.Math;
 using VisualPinball.Engine.VPT.Table;
@@ -31,35 +32,45 @@ using VisualPinball.Engine.VPT.Table;
 namespace VisualPinball.Engine.VPT.Primitive
 {
 	[Serializable]
+	[MessagePackObject]
 	public class PrimitiveData : ItemData, IPhysicalData
 	{
 		public override string GetName() => Name;
 		public override void SetName(string name) { Name = name; }
 
+		[Key(15)]
 		[BiffString("NAME", IsWideString = true, Pos = 15)]
 		public string Name;
 
+		[Key(1)]
 		[BiffVertex("VPOS", IsPadded = true, Pos = 1)]
 		public Vertex3D Position;
 
+		[Key(2)]
 		[BiffVertex("VSIZ", IsPadded = true, Pos = 2)]
 		public Vertex3D Size = new Vertex3D(100, 100, 100);
 
+		[Key(40)]
 		[BiffInt("M3VN", Pos = 40)]
 		public int NumVertices;
 
+		[Key(41)]
 		[BiffInt("M3CY", Pos = 41)]
 		public int CompressedVertices;
 
+		[Key(43)]
 		[BiffInt("M3FN", Pos = 43)]
 		public int NumIndices;
 
+		[Key(44)]
 		[BiffInt("M3CJ", Pos = 44)]
 		public int CompressedIndices = 0;
 
+		[Key(46)]
 		[BiffInt("M3AY", Pos = 46)]
 		public int CompressedAnimationVertices;
 
+		[Key(42)]
 		[BiffVertices("M3DX", SkipWrite = true)]
 		[BiffVertices("M3CX", IsCompressed = true, Pos = 42)]
 		[BiffIndices("M3DI", SkipWrite = true)]
@@ -67,6 +78,7 @@ namespace VisualPinball.Engine.VPT.Primitive
 		[BiffAnimation("M3AX", IsCompressed = true, Pos = 47)]
 		public Mesh Mesh = new Mesh();
 
+		[Key(3)]
 		[BiffFloat("RTV0", Index = 0, Pos = 3)]
 		[BiffFloat("RTV1", Index = 1, Pos = 4)]
 		[BiffFloat("RTV2", Index = 2, Pos = 5)]
@@ -78,94 +90,123 @@ namespace VisualPinball.Engine.VPT.Primitive
 		[BiffFloat("RTV8", Index = 8, Pos = 11)]
 		public float[] RotAndTra = new float[9];
 
+		[Key(12)]
 		[TextureReference]
 		[BiffString("IMAG", Pos = 12)]
 		public string Image = string.Empty;
 
+		[Key(13)]
 		[TextureReference]
 		[BiffString("NRMA", Pos = 13)]
 		public string NormalMap = string.Empty;
 
+		[Key(14)]
 		[BiffInt("SIDS", Pos = 14)]
 		public int Sides = 4;
 
+		[Key(16)]
 		[MaterialReference]
 		[BiffString("MATR", Pos = 16)]
 		public string Material = string.Empty;
 
+		[Key(17)]
 		[BiffColor("SCOL", Pos = 17)]
 		public Color SideColor = new Color(0x0, ColorFormat.Bgr);
 
+		[Key(18)]
 		[BiffBool("TVIS", Pos = 18)]
 		public bool IsVisible = true;
 
+		[Key(34)]
 		[BiffBool("REEN", Pos = 34)]
 		public bool IsReflectionEnabled = true;
 
+		[Key(19)]
 		[BiffBool("DTXI", Pos = 19)]
 		public bool DrawTexturesInside;
 
+		[Key(20)]
 		[BiffBool("HTEV", Pos = 20)]
 		public bool HitEvent = true;
 
+		[Key(21)]
 		[BiffFloat("THRS", Pos = 21)]
 		public float Threshold = 2f;
 
+		[Key(22)]
 		[BiffFloat("ELAS", Pos = 22)]
 		public float Elasticity = 0.3f;
 
+		[Key(23)]
 		[BiffFloat("ELFO", Pos = 23)]
 		public float ElasticityFalloff = 0.5f;
 
+		[Key(24)]
 		[BiffFloat("RFCT", Pos = 24)]
 		public float Friction = 0.3f;
 
+		[Key(25)]
 		[BiffFloat("RSCT", Pos = 25)]
 		public float Scatter;
 
+		[Key(26)]
 		[BiffFloat("EFUI", Pos = 26)]
 		public float EdgeFactorUi = 0.25f;
 
+		[Key(27)]
 		[BiffFloat("CORF", Pos = 27)]
 		public float CollisionReductionFactor = 0;
 
+		[Key(28)]
 		[BiffBool("CLDR", Pos = 28)]
 		public bool IsCollidable = true; // originally "CLDRP"
 
+		[Key(29)]
 		[BiffBool("ISTO", Pos = 29)]
 		public bool IsToy;
 
+		[Key(36)]
 		[MaterialReference]
 		[BiffString("MAPH", Pos = 36)]
 		public string PhysicsMaterial = string.Empty;
 
+		[Key(37)]
 		[BiffBool("OVPH", Pos = 37)]
 		public bool OverwritePhysics = true;
 
+		[Key(31)]
 		[BiffBool("STRE", Pos = 31)]
 		public bool StaticRendering = true;
 
+		[Key(32)]
 		[BiffFloat("DILI", QuantizedUnsignedBits = 8, Pos = 32)]
 		public float DisableLightingTop; // m_d.m_fDisableLightingTop = (tmp == 1) ? 1.f : dequantizeUnsigned<8>(tmp); // backwards compatible hacky loading!
 
+		[Key(33)]
 		[BiffFloat("DILB", Pos = 33)]
 		public float DisableLightingBelow;
 
+		[Key(30)]
 		[BiffBool("U3DM", Pos = 30)]
 		public bool Use3DMesh;
 
+		[Key(35)]
 		[BiffBool("EBFC", Pos = 35)]
 		public bool BackfacesEnabled;
 
+		[Key(38)]
 		[BiffBool("DIPT", Pos = 38)]
 		public bool DisplayTexture;
 
+		[Key(385)]
 		[BiffBool("OSNM", Pos = 38.5)]
 		public bool ObjectSpaceNormalMap;
 
+		[Key(39)]
 		[BiffString("M3DN", Pos = 39)]
 		public string MeshFileName = string.Empty;
 
+		[Key(48)]
 		[BiffFloat("PIDB", Pos = 48)]
 		public float DepthBias = 0;
 
@@ -197,6 +238,11 @@ namespace VisualPinball.Engine.VPT.Primitive
 		static PrimitiveData()
 		{
 			Init(typeof(PrimitiveData), Attributes);
+		}
+
+		[SerializationConstructor]
+		public PrimitiveData() : base(StoragePrefix.GameItem)
+		{
 		}
 
 		public PrimitiveData(BinaryReader reader, string storageName) : base(storageName)

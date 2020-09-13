@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.IO;
 using VisualPinball.Engine.VPT.Table;
 using VisualPinball.Resources;
@@ -30,28 +31,40 @@ using VisualPinball.Resources;
 namespace VisualPinball.Engine.VPT
 {
 	[Serializable]
+	[MessagePackObject]
 	public class BinaryData : ItemData, IImageData
 	{
-		public byte[] Bytes => Data;
-		public byte[] FileContent => Data;
+		[IgnoreMember] public byte[] Bytes => Data;
+		[IgnoreMember] public byte[] FileContent => Data;
 
 		public override string GetName() => Name;
 		public override void SetName(string name) { Name = name; }
 
+		[Key(1)]
 		[BiffString("NAME", HasExplicitLength = true, Pos = 1)]
 		public string Name;
 
+		[Key(2)]
 		[BiffString("INME", Pos = 2)]
 		public string InternalName;
 
+		[Key(3)]
 		[BiffString("PATH", Pos = 3)]
 		public string Path;
 
+		[Key(4)]
 		[BiffInt("SIZE", Pos = 4)]
 		public int Size;
 
+		[Key(5)]
 		[BiffByte("DATA", Pos = 5)]
 		public byte[] Data;
+
+
+		[SerializationConstructor]
+		public BinaryData() : base(null)
+		{
+		}
 
 		public BinaryData(string name) : base(name)
 		{

@@ -18,45 +18,54 @@
 
 using System;
 using System.IO;
+using MessagePack;
 
 namespace VisualPinball.Engine.VPT.Sound
 {
 	[Serializable]
+	[MessagePackObject]
 	public class WaveFormat
 	{
 		/// <summary>
 		/// Format type
 		/// </summary>
+		[Key(0)]
 		public ushort FormatTag;
 
 		/// <summary>
 		/// Number of channels (i.e. mono, stereo...)
 		/// </summary>
+		[Key(1)]
 		public ushort Channels;
 
 		/// <summary>
 		/// Sample rate
 		/// </summary>
+		[Key(2)]
 		public uint SamplesPerSec;
 
 		/// <summary>
 		/// For buffer estimation
 		/// </summary>
+		[Key(3)]
 		public uint AvgBytesPerSec;
 
 		/// <summary>
 		/// Block size of data
 		/// </summary>
+		[Key(4)]
 		public ushort BlockAlign;
 
 		/// <summary>
 		/// Number of bits per sample of mono data
 		/// </summary>
+		[Key(5)]
 		public ushort BitsPerSample;
 
 		/// <summary>
 		/// The count in bytes of the size of extra information (after cbSize)
 		/// </summary>
+		[Key(6)]
 		public ushort CbSize;
 
 		public WaveFormat()

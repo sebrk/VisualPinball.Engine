@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.IO;
 using VisualPinball.Engine.Math;
 using VisualPinball.Engine.VPT.Table;
@@ -30,23 +31,29 @@ using VisualPinball.Engine.VPT.Table;
 namespace VisualPinball.Engine.VPT.Timer
 {
 	[Serializable]
+	[MessagePackObject]
 	public class TimerData : ItemData
 	{
 		public override string GetName() => Name;
 		public override void SetName(string name) { Name = name; }
 
+		[Key(4)]
 		[BiffString("NAME", IsWideString = true, Pos = 4)]
 		public string Name;
 
+		[Key(1)]
 		[BiffVertex("VCEN", Pos = 1)]
 		public Vertex2D Center;
 
+		[Key(5)]
 		[BiffBool("BGLS", Pos = 5)]
 		public bool Backglass = false;
 
+		[Key(2)]
 		[BiffBool("TMON", Pos = 2)]
 		public bool IsTimerEnabled;
 
+		[Key(3)]
 		[BiffInt("TMIN", Pos = 3)]
 		public int TimerInterval;
 
@@ -55,6 +62,11 @@ namespace VisualPinball.Engine.VPT.Timer
 		static TimerData()
 		{
 			Init(typeof(TimerData), Attributes);
+		}
+
+		[SerializationConstructor]
+		public TimerData() : base(StoragePrefix.GameItem)
+		{
 		}
 
 		public TimerData(BinaryReader reader, string storageName) : base(storageName)

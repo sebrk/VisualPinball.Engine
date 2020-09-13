@@ -24,29 +24,36 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.IO;
 using VisualPinball.Engine.VPT.Table;
 
 namespace VisualPinball.Engine.VPT.Collection
 {
 	[Serializable]
+	[MessagePackObject]
 	public class CollectionData : ItemData
 	{
 		public override string GetName() => Name;
 		public override void SetName(string name) { Name = name; }
 
+		[Key(1)]
 		[BiffString("NAME", IsWideString = true, Pos = 1)]
 		public string Name;
 
+		[Key(2)]
 		[BiffString("ITEM", IsWideString = true, TagAll = true, Pos = 2)]
 		public string[] ItemNames;
 
+		[Key(3)]
 		[BiffBool("EVNT", Pos = 3)]
 		public bool FireEvents = false;
 
+		[Key(5)]
 		[BiffBool("GREL", Pos = 5)]
 		public bool GroupElements = true;
 
+		[Key(4)]
 		[BiffBool("SSNG", Pos = 4)]
 		public bool StopSingleEvents = false;
 
@@ -78,6 +85,10 @@ namespace VisualPinball.Engine.VPT.Collection
 		static CollectionData()
 		{
 			Init(typeof(CollectionData), Attributes);
+		}
+
+		public CollectionData() : base(StoragePrefix.Collection)
+		{
 		}
 
 		public CollectionData(string name) : base(StoragePrefix.Collection)

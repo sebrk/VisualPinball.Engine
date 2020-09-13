@@ -17,27 +17,30 @@
 using System;
 using System.IO;
 using System.Text;
+using MessagePack;
 using VisualPinball.Engine.Common;
+using VisualPinball.Engine.IO;
 using VisualPinball.Engine.VPT.Table;
 
 namespace VisualPinball.Engine.VPT.Sound
 {
 	[Serializable]
+	[MessagePackObject]
 	public class SoundData : ItemData
 	{
 		public override string GetName() => Name;
 		public override void SetName(string name) { Name = name; }
 
-		public string Name;
-		public string Path;
-		public string InternalName;
-		public WaveFormat Wfx;
-		public byte[] Data;
+		[Key(0)] public string Name;
+		[Key(1)] public string Path;
+		[Key(2)] public string InternalName;
+		[Key(3)] public WaveFormat Wfx;
+		[Key(4)] public byte[] Data;
 
-		public byte OutputTarget = SoundOutTypes.Table;
-		public int Volume;
-		public int Balance;
-		public int Fade;
+		[Key(5)] public byte OutputTarget = SoundOutTypes.Table;
+		[Key(6)] public int Volume;
+		[Key(7)] public int Balance;
+		[Key(8)] public int Fade;
 
 		public SoundData(string name) : base(IO.StoragePrefix.Sound)
 		{
@@ -46,6 +49,11 @@ namespace VisualPinball.Engine.VPT.Sound
 			InternalName = name;
 			Wfx = new WaveFormat();
 			Data = new byte[0];
+		}
+
+		[SerializationConstructor]
+		public SoundData() : base(StoragePrefix.Sound)
+		{
 		}
 
 		public SoundData(BinaryReader reader, string storageName, int fileVersion) : base(storageName)

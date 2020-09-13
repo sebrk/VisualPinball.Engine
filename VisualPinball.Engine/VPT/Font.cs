@@ -17,17 +17,24 @@
 using System;
 using System.IO;
 using System.Text;
+using MessagePack;
 using VisualPinball.Engine.VPT.Table;
 
 namespace VisualPinball.Engine.VPT
 {
 	[Serializable]
+	[MessagePackObject]
 	public class Font
 	{
-		public string Name;
-		public ushort Weight;
-		public uint Size;
-		public bool Italic;
+		[Key(0)] public string Name;
+		[Key(1)] public ushort Weight;
+		[Key(2)] public uint Size;
+		[Key(3)] public bool Italic;
+
+		[SerializationConstructor]
+		public Font()
+		{
+		}
 
 		public Font(BinaryReader reader)
 		{

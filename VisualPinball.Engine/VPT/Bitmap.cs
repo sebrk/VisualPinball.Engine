@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MessagePack;
 using VisualPinball.Engine.IO;
 
 namespace VisualPinball.Engine.VPT
@@ -28,21 +29,29 @@ namespace VisualPinball.Engine.VPT
 	/// See "BaseTexture" class in VP.
 	/// </summary>
 	[Serializable]
+	[MessagePackObject]
 	public class Bitmap : IImageData
 	{
-		public const int RGBA = 0;
-		public const int RGB_FP = 1;
+		[IgnoreMember] public const int RGBA = 0;
+		[IgnoreMember] public const int RGB_FP = 1;
 
-		public byte[] Bytes => Data;
-		public byte[] FileContent => GetHeader().Concat(GetBody()).ToArray();
+		[IgnoreMember] public byte[] Bytes => Data;
+		[IgnoreMember] public byte[] FileContent => GetHeader().Concat(GetBody()).ToArray();
 
-		public int Width;
-		public int Height;
-		public int Format;
+		[Key(0)] public int Width;
+		[Key(1)] public int Height;
+		[Key(2)] public int Format;
+
 		[NonSerialized]
+		[Key(3)]
 		public byte[] Data;
 
 		private int _compressedLen;
+
+		[SerializationConstructor]
+		public Bitmap()
+		{
+		}
 
 		public Bitmap(BinaryReader reader, int width, int height, int format = RGBA)
 		{

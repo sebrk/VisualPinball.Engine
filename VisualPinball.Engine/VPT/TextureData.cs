@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.IO;
 using VisualPinball.Engine.VPT.Table;
 using VisualPinball.Resources;
@@ -30,34 +31,44 @@ using VisualPinball.Resources;
 namespace VisualPinball.Engine.VPT
 {
 	[Serializable]
+	[MessagePackObject]
 	public class TextureData : ItemData
 	{
+		[IgnoreMember]
 		public bool HasBitmap => Bitmap != null && Bitmap.Data != null && Bitmap.Data.Length > 0;
 
 		public override string GetName() => Name;
 		public override void SetName(string name) { Name = name; }
 
+		[Key(1)]
 		[BiffString("NAME", HasExplicitLength = true, Pos = 1)]
 		public string Name;
 
+		[Key(2)]
 		[BiffString("INME", Pos = 2)]
 		public string InternalName;
 
+		[Key(3)]
 		[BiffString("PATH", Pos = 3)]
 		public string Path;
 
+		[Key(4)]
 		[BiffInt("WDTH", Pos = 4)]
 		public int Width;
 
+		[Key(5)]
 		[BiffInt("HGHT", Pos = 5)]
 		public int Height;
 
+		[Key(7)]
 		[BiffFloat("ALTV", Pos = 7)]
 		public float AlphaTestValue;
 
+		[Key(6)]
 		[BiffBinary("JPEG", Pos = 6)]
 		public BinaryData Binary;
 
+		[Key(8)]
 		[BiffBits("BITS", Pos = 6)]
 		public Bitmap Bitmap; // originally "PdsBuffer";
 
@@ -90,6 +101,11 @@ namespace VisualPinball.Engine.VPT
 		static TextureData()
 		{
 			Init(typeof(TextureData), Attributes);
+		}
+
+		[SerializationConstructor]
+		public TextureData() : base(StoragePrefix.Image)
+		{
 		}
 
 		public TextureData(BinaryReader reader, string storageName) : base(storageName)

@@ -291,7 +291,28 @@ namespace VisualPinball.Engine.VPT.Table
 		{
 			var tb = new TableBundle {
 				Table = Data,
-				Bumpers = _bumpers.Values.Select(b => b.Data).ToArray()
+				Bumpers = _bumpers.Values.Select(b => b.Data).ToArray(),
+				Collections = Collections.Values.Select(b => b.Data).ToArray(),
+				Decals = _decals.Select(b => b.Data).ToArray(),
+				DispReels = _dispReels.Values.Select(b => b.Data).ToArray(),
+				Flashers = _flashers.Values.Select(b => b.Data).ToArray(),
+				Flippers = _flippers.Values.Select(b => b.Data).ToArray(),
+				Gates = _gates.Values.Select(b => b.Data).ToArray(),
+				HitTargets = _hitTargets.Values.Select(b => b.Data).ToArray(),
+				Kickers = _kickers.Values.Select(b => b.Data).ToArray(),
+				Lights = _lights.Values.Select(b => b.Data).ToArray(),
+				LightSeqs = _lightSeqs.Values.Select(b => b.Data).ToArray(),
+				Plungers = _plungers.Values.Select(b => b.Data).ToArray(),
+				Primitives = _primitives.Values.Select(b => b.Data).ToArray(),
+				Ramps = _ramps.Values.Select(b => b.Data).ToArray(),
+				Rubbers = _rubbers.Values.Select(b => b.Data).ToArray(),
+				Sounds = Sounds.Select(b => b.Data).ToArray(),
+				Spinners = _spinners.Values.Select(b => b.Data).ToArray(),
+				Surfaces = _surfaces.Values.Select(b => b.Data).ToArray(),
+				TextBoxes = _textBoxes.Values.Select(b => b.Data).ToArray(),
+				Textures = Textures.Values.Select(b => b.Data).ToArray(),
+				Timers = _timers.Values.Select(b => b.Data).ToArray(),
+				Triggers = _triggers.Values.Select(b => b.Data).ToArray()
 			};
 			return tb;
 		}
