@@ -52,10 +52,10 @@ namespace VisualPinball.Engine.VPT.Flasher
 		public float PosX { set => Center.X = value; get => Center.X; }
 
 		[IgnoreMember]
+		[BiffFloat("FLAY", Pos = 3)]
 		public float PosY { set => Center.Y = value; get => Center.Y; }
 
 		[Key(3)]
-		[BiffFloat("FLAY", Pos = 3)]
 		public Vertex2D Center = new Vertex2D();
 
 		[Key(4)]

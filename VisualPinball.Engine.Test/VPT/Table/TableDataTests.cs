@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+using System.Diagnostics;
+using System.IO;
 using FluentAssertions;
+using MessagePack;
 using NUnit.Framework;
 using VisualPinball.Engine.Common;
 using VisualPinball.Engine.Test.Test;
@@ -30,6 +33,55 @@ namespace VisualPinball.Engine.Test.VPT.Table
 		{
 			var table = Engine.VPT.Table.Table.Load(VpxPath.Table);
 			ValidateTableData(table.Data);
+		}
+
+		[Test]
+		public void TablePerfWrite()
+		{
+			const string path = @"C:\Games\Visual Pinball\Tables\Medieval Madness X VPX- NZ&TT 1.1.vpx";
+			var table = Engine.VPT.Table.Table.Load(path);
+			var timer = new Stopwatch();
+			var tb = table.GenerateBundle();
+			timer.Start();
+			var bytes = MessagePackSerializer.Serialize(tb);
+			var messagePackSerialized = timer.ElapsedMilliseconds;
+
+			File.WriteAllBytes("serialized.vpe", bytes);
+			timer.Stop();
+			var messagePackSerializedWritten = timer.ElapsedMilliseconds;
+
+			timer.Reset();
+			timer.Start();
+
+			new TableWriter(table).WriteTable("serialized.vpx");
+			var vpxSerializedWritten = timer.ElapsedMilliseconds;
+
+			timer.Stop();
+
+			Logger.Info("Serialized MessagePack: {0}ms", messagePackSerialized);
+			Logger.Info("Serialized & written MessagePack: {0}ms", messagePackSerializedWritten);
+			Logger.Info("Serialized VPX: {0}ms", vpxSerializedWritten);
+		}
+
+		[Test]
+		public void TablePerfRead()
+		{
+			var timer = new Stopwatch();
+			timer.Start();
+			Engine.VPT.Table.Table.Load("serialized.vpx");
+			var vpxSerialized = timer.ElapsedMilliseconds;
+			timer.Stop();
+
+			timer.Reset();
+			timer.Start();
+
+			MessagePackSerializer.Deserialize<TableBundle>(File.ReadAllBytes("serialized.vpe"));
+			var vpeSerialized = timer.ElapsedMilliseconds;
+
+			timer.Stop();
+
+			Logger.Info("Serialized MessagePack: {0}ms", vpeSerialized);
+			Logger.Info("Serialized VPX: {0}ms", vpxSerialized);
 		}
 
 		[Test]

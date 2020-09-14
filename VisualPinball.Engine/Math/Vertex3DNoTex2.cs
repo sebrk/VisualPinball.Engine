@@ -17,24 +17,27 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessagePack;
 
 namespace VisualPinball.Engine.Math
 {
 	[Serializable]
+	[MessagePackObject]
 	public class Vertex3DNoTex2
 	{
+		[IgnoreMember]
 		public const int Size = 32;
 
-		public float X;
-		public float Y;
-		public float Z;
+		[Key(0)] public float X;
+		[Key(1)] public float Y;
+		[Key(2)] public float Z;
 
-		public float Nx;
-		public float Ny;
-		public float Nz;
+		[Key(3)] public float Nx;
+		[Key(4)] public float Ny;
+		[Key(5)] public float Nz;
 
-		public float Tu;
-		public float Tv;
+		[Key(6)] public float Tu;
+		[Key(7)] public float Tv;
 
 		public Vertex3DNoTex2(BinaryReader reader)
 		{

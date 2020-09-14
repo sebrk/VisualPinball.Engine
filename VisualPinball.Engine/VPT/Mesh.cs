@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using MessagePack;
 using VisualPinball.Engine.Common;
 using VisualPinball.Engine.Math;
 
@@ -33,13 +34,17 @@ namespace VisualPinball.Engine.VPT
 	/// coordinates.
 	/// </summary>
 	[Serializable]
+	[MessagePackObject]
 	public class Mesh
 	{
-		public string Name;
-		public Vertex3DNoTex2[] Vertices;
-		public int[] Indices;
+		[Key(0)] public string Name;
+		[Key(1)] public Vertex3DNoTex2[] Vertices;
+		[Key(2)] public int[] Indices;
+
+		[IgnoreMember]
 		public bool IsSet => Vertices != null && Indices != null;
 
+		[Key(3)]
 		public List<VertData[]> AnimationFrames = new List<VertData[]>();
 
 		public Mesh() { }
@@ -346,17 +351,19 @@ namespace VisualPinball.Engine.VPT
 		/// It is used primarily for storing animation frames.
 		/// </summary>
 		[Serializable]
+		[MessagePackObject]
 		public struct VertData
 		{
+			[IgnoreMember]
 			public const int Size = 24;
 
-			public float X;
-			public float Y;
-			public float Z;
+			[Key(0)] public float X;
+			[Key(1)] public float Y;
+			[Key(2)] public float Z;
 
-			public float Nx;
-			public float Ny;
-			public float Nz;
+			[Key(3)] public float Nx;
+			[Key(4)] public float Ny;
+			[Key(5)] public float Nz;
 
 			public VertData(BinaryReader reader)
 			{
