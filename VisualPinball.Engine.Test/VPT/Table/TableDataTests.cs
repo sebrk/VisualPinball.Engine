@@ -38,12 +38,15 @@ namespace VisualPinball.Engine.Test.VPT.Table
 		[Test]
 		public void TablePerfWrite()
 		{
-			const string path = @"C:\Games\Visual Pinball\Tables\Medieval Madness X VPX- NZ&TT 1.1.vpx";
-			var table = Engine.VPT.Table.Table.Load(path);
+			//const string path = @"C:\Games\Visual Pinball\Tables\The Flintstones (Williams 1994) v1.25.5(Mod).vpx";
+			var table = Engine.VPT.Table.Table.Load(VpxPath.Texture);
 			var timer = new Stopwatch();
 			var tb = table.GenerateBundle();
+
+			var lz4Options = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
+
 			timer.Start();
-			var bytes = MessagePackSerializer.Serialize(tb);
+			var bytes = MessagePackSerializer.Serialize(tb, lz4Options);
 			var messagePackSerialized = timer.ElapsedMilliseconds;
 
 			File.WriteAllBytes("serialized.vpe", bytes);
@@ -72,10 +75,12 @@ namespace VisualPinball.Engine.Test.VPT.Table
 			var vpxSerialized = timer.ElapsedMilliseconds;
 			timer.Stop();
 
+			var lz4Options = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
+
 			timer.Reset();
 			timer.Start();
 
-			MessagePackSerializer.Deserialize<TableBundle>(File.ReadAllBytes("serialized.vpe"));
+			MessagePackSerializer.Deserialize<TableBundle>(File.ReadAllBytes("serialized.vpe"), lz4Options);
 			var vpeSerialized = timer.ElapsedMilliseconds;
 
 			timer.Stop();
