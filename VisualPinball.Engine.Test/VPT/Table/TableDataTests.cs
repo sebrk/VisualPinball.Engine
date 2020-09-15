@@ -17,7 +17,6 @@
 using System.Diagnostics;
 using System.IO;
 using FluentAssertions;
-using MessagePack;
 using NUnit.Framework;
 using VisualPinball.Engine.Common;
 using VisualPinball.Engine.Test.Test;
@@ -35,58 +34,43 @@ namespace VisualPinball.Engine.Test.VPT.Table
 			ValidateTableData(table.Data);
 		}
 
-		[Test]
-		public void TablePerfWrite()
+		//[Test]
+		public void TablePerf()
 		{
-			//const string path = @"C:\Games\Visual Pinball\Tables\The Flintstones (Williams 1994) v1.25.5(Mod).vpx";
-			var table = Engine.VPT.Table.Table.Load(VpxPath.Texture);
+			const string path = @"D:\Pinball\Visual Pinball\Tables\Monster Bash X - NZ&TT 1.3.vpx";
+			var vpSize = new FileInfo(path).Length / 1024d / 1024d;
+			var table = Engine.VPT.Table.Table.Load(path);
 			var timer = new Stopwatch();
 			var tb = table.GenerateBundle();
 
-			var lz4Options = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
-
+			// messagepack serialize
 			timer.Start();
-			var bytes = MessagePackSerializer.Serialize(tb, lz4Options);
-			var messagePackSerialized = timer.ElapsedMilliseconds;
-
-			File.WriteAllBytes("serialized.vpe", bytes);
-			timer.Stop();
-			var messagePackSerializedWritten = timer.ElapsedMilliseconds;
-
+			tb.WriteCompressed("serialized.vpe");
+			var mpWrite = timer.ElapsedMilliseconds;
 			timer.Reset();
+
+			var mpSize = new FileInfo("serialized.vpe").Length / 1024d / 1024d;
+
+			// vpx serialize
 			timer.Start();
-
 			new TableWriter(table).WriteTable("serialized.vpx");
-			var vpxSerializedWritten = timer.ElapsedMilliseconds;
+			var vpWrite = timer.ElapsedMilliseconds;
+			timer.Reset();
 
-			timer.Stop();
 
-			Logger.Info("Serialized MessagePack: {0}ms", messagePackSerialized);
-			Logger.Info("Serialized & written MessagePack: {0}ms", messagePackSerializedWritten);
-			Logger.Info("Serialized VPX: {0}ms", vpxSerializedWritten);
-		}
+			// messagepack deserialize
+			timer.Start();
+			TableBundle.ReadCompressed("serialized.vpe");
+			var mpRead = timer.ElapsedMilliseconds;
+			timer.Reset();
 
-		[Test]
-		public void TablePerfRead()
-		{
-			var timer = new Stopwatch();
+			// vpx deserialize
 			timer.Start();
 			Engine.VPT.Table.Table.Load("serialized.vpx");
-			var vpxSerialized = timer.ElapsedMilliseconds;
-			timer.Stop();
-
-			var lz4Options = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
-
+			var vpRead = timer.ElapsedMilliseconds;
 			timer.Reset();
-			timer.Start();
 
-			MessagePackSerializer.Deserialize<TableBundle>(File.ReadAllBytes("serialized.vpe"), lz4Options);
-			var vpeSerialized = timer.ElapsedMilliseconds;
-
-			timer.Stop();
-
-			Logger.Info("Serialized MessagePack: {0}ms", vpeSerialized);
-			Logger.Info("Serialized VPX: {0}ms", vpxSerialized);
+			Logger.Info($"{Path.GetFileNameWithoutExtension(path)},{vpSize},{mpSize},{mpWrite},{mpRead},{vpWrite},{vpRead}");
 		}
 
 		[Test]

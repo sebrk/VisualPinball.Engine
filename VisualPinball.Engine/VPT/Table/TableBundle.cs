@@ -1,3 +1,4 @@
+using System.IO;
 using MessagePack;
 using VisualPinball.Engine.VPT.Bumper;
 using VisualPinball.Engine.VPT.Collection;
@@ -50,5 +51,17 @@ namespace VisualPinball.Engine.VPT.Table
 		[Key(20)] public TimerData[] Timers;
 		[Key(21)] public TextureData[] Textures;
 		[Key(22)] public TriggerData[] Triggers;
+
+		public static TableBundle ReadCompressed(string filename)
+		{
+			var lz4Options = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
+			return MessagePackSerializer.Deserialize<TableBundle>(File.ReadAllBytes("serialized.vpe"), lz4Options);
+		}
+
+		public void WriteCompressed(string filename) {
+			var lz4Options = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
+			var bytes = MessagePackSerializer.Serialize(this, lz4Options);
+			File.WriteAllBytes(filename, bytes);
+		}
 	}
 }
