@@ -64,7 +64,7 @@ namespace VisualPinball.Unity
 		private void Awake()
 		{
 			var tableComponent = gameObject.GetComponent<TableAuthoring>();
-			Table = tableComponent.CreateTable();
+			Table = tableComponent.CreateTable(tableComponent.Data);
 			_ballManager = new BallManager(Table, TableToWorld);
 		}
 
