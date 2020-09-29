@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -122,7 +122,7 @@ namespace VisualPinball.Unity.Editor
 			}
 		}
 
-		[UnityEditor.Callbacks.DidReloadScripts]
+		[DidReloadScripts]
 		public static void OnScriptsReloaded()
 		{
 			DisableGizmo<BumperAuthoring>();
